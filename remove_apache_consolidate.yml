@@ -1,0 +1,20 @@
+---
+-
+  hosts: multi
+  become: true
+
+  tasks:
+ 
+  - name: Remove Apache and PHP
+    package:
+      name: 
+       - "{{ apache_package }}"
+       - "{{ php_package }}"
+      state: absent
+    notify: Apache and php removed
+
+  handlers:
+   - name: Apache and php removed 
+     debug:
+       msg: "!!! Apache and PHP  REMOVED !!!"
+...

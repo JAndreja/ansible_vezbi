@@ -19,11 +19,11 @@
     notify: Apache removed
     when: ansible_os_family == "Debian"
 
-  - name: Remove Nginx 
-    yum:
-      name: nginx
-      state: absent
-    notify: Nginx removed
+ # - name: Remove Nginx 
+ #   yum:
+ #     name: nginx
+ #     state: absent
+ #   notify: Nginx removed
 
   - name: Remove php support for apache
     yum:

@@ -2,13 +2,12 @@
 ansible-engine ansible_connection=local
 
 [redhat]
-node1  ansible_host=172.31.24.191
-node2  ansible_host=172.31.25.60
-node3  ansible_host=172.31.25.42
+node1  ansible_host=172.31.24.191 apache_package=httpd php_package=php
+node2  ansible_host=172.31.25.60  apache_package=httpd php_package=php
+node3  ansible_host=172.31.25.42  apache_package=httpd php_package=ph
 
 [ubuntu]
-node4  ansible_host=172.31.20.94
-
+node4  ansible_host=172.31.20.94  apache_package=apache2 php_package=php
 
 [multi:children]
 redhat

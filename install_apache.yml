@@ -1,86 +1,46 @@
 ---
-- name: Target REDHAT
+-
  
-  hosts:  redhat
+  hosts:  multi
   become: true
 
   tasks:
   
-  - name: Update repo index
-    yum:
-      update_cache: yes
-    when: ansible_os_family =="RedHat"
-
-  - name: Update all packages
+  - name: Update all packages RedHat and Ubuntu
     yum:
       name: '*'
       state: latest
-    when: ansible_os_family == "RedHat"
+    notify: Update installed
 
-  - name: Install Apache
+  - name: Install Apache and PHP packages RedHat
     yum:
-      name: httpd
+      name: 
+        - httpd
+        - php
       state: latest
-    notify: Apache instaled
-    when: ansible_os_family == "RedHat"
-
-  - name: add php support for apache
-    yum:
-      name: php
-      state: latest
-    notify: PHP support for apache instaled
-    when: ansible_os_family == "RedHat"
-
-  handlers:
-   - name: Apache instaled
-     debug:
-       msg: Apache instaled on RedHat!!!
-   - name: PHP support for apache instaled
-     debug:
-       msg: PHP support instaled on RedHat!!!
-
-- name: Target UBUNTU
- 
-  hosts:  ubuntu
-  become: true
-
-  tasks:
-  
-  - name: Update repo index
-    apt:
       update_cache: yes
-    when: ansible_os_family =="Debian"
+    notify: Apache and PHP instaled
+    when: ansible_os_family == "RedHat"
 
-  - name: Update all packages
+  - name: Install Apache and PHP packages Ubuntu
     apt:
-      name: '*'
+      name:
+        -  apache2
+        -  php
       state: latest
-    when: ansible_os_family == "Debian"
-
-  - name: Install Apache 
-    apt:
-      name: apache2
-      state: latest
-    notify: Apache instaled ubuntu
-    when: ansible_os_family == "Debian"
-
-  - name: add php support for apache
-    apt:
-      name: php
-      state: latest
-    notify: PHP support for apache instaled
+      update_cache: yes
+    notify: Apache and PHP instaled ubuntu
     when: ansible_os_family == "Debian"
 
   handlers:
-   - name: Apache instaled ubuntu
+   - name: Update installed
      debug:
-       msg: Apache instaled on Ubuntu!!!
-   - name: PHP support for apache instaled
+       msg: Update DOWN!!!
+   - name: Apache and PHP instaled
      debug:
-       msg: PHP support instaled on Ubuntu!!!
-
-
-
-
+       msg: Apache and PHP instaled on RedHat!!!
+   - name: Apache and PHP instaled ubuntu
+     debug:
+       msg: Apache and PHP instaled on Ubuntu!!!
 
 ...

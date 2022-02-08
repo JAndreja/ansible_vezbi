@@ -1,0 +1,26 @@
+---
+- name: Install APACHE and PHP on RedHad and Ubuntu
+  hosts:  multi
+  become: true
+
+  tasks:
+  
+  - name: Update all packages
+    package:
+      name: '*'
+      state: latest
+
+  - name: Install Apache and PHP packages
+    package:
+      name: 
+        - "{{ apache_package }}"
+        - "{{ php_package }}"
+      state: latest
+      update_cache: yes
+    notify: Apache and PHP instaled
+
+  handlers:
+   - name: Apache and PHP instaled
+     debug:
+       msg: Apache and PHP instaled 
+...
