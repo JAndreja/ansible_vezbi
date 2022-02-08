@@ -1,0 +1,31 @@
+---
+-
+  hosts: multi
+  become: true
+
+  tasks:
+  
+  - name: Update repo index
+    yum:
+      update_cache: yes
+
+  - name: Install Apache
+    yum:
+      name: httpd
+      state: latest
+    notify: Apache instaled
+ 
+  - name: add php support for apache
+    yum:
+      name: php
+      state: latest
+    notify: PHP support for apache instaled
+
+  handlers:
+   - name: Apache instaled 
+     debug:
+       msg: Apache instaled!!!
+   - name: PHP support for apache instaled
+     debug:
+       msg: PHP support instaled!!!
+...

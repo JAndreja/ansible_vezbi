@@ -1,0 +1,36 @@
+---
+-
+  hosts: multi
+  become: true
+
+  tasks:
+ 
+  - name: Remove Apache
+    yum:
+      name: httpd
+      state: absent
+    notify: Apache removed
+
+  - name: Remove Nginx 
+    yum:
+      name: nginx
+      state: absent
+    notify: Nginx removed
+
+  - name: Remove php support for apache
+    yum:
+      name: php
+      state: absent
+    notify: PHP removed
+
+  handlers:
+   - name: Apache removed 
+     debug:
+       msg: "!!! Apache REMOVED !!!"
+   - name: PHP removed
+     debug:
+       msg: "!!! PHP support REMOVED !!!"
+   - name: Nginx removed
+     debug:
+       msg: NGINX REMOVED
+...
