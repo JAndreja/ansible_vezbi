@@ -10,6 +10,14 @@
       name: httpd
       state: absent
     notify: Apache removed
+#    when: ansible_os_family == "Redhat"
+
+  - name: Remove Apache Ubuntu
+    apt:
+      name: apache2 
+      state: absent
+    notify: Apache removed
+    when: ansible_os_family == "Debian"
 
   - name: Remove Nginx 
     yum:
@@ -22,6 +30,7 @@
       name: php
       state: absent
     notify: PHP removed
+#    when: ansible_os_family == "Redhat"
 
   handlers:
    - name: Apache removed 

@@ -1,6 +1,7 @@
 ---
--
-  hosts: multi
+- name: Target REDHAT
+ 
+  hosts:  redhat
   become: true
 
   tasks:
@@ -8,24 +9,78 @@
   - name: Update repo index
     yum:
       update_cache: yes
+    when: ansible_os_family =="RedHat"
+
+  - name: Update all packages
+    yum:
+      name: '*'
+      state: latest
+    when: ansible_os_family == "RedHat"
 
   - name: Install Apache
     yum:
       name: httpd
       state: latest
     notify: Apache instaled
- 
+    when: ansible_os_family == "RedHat"
+
   - name: add php support for apache
     yum:
       name: php
       state: latest
     notify: PHP support for apache instaled
+    when: ansible_os_family == "RedHat"
 
   handlers:
-   - name: Apache instaled 
+   - name: Apache instaled
      debug:
-       msg: Apache instaled!!!
+       msg: Apache instaled on RedHat!!!
    - name: PHP support for apache instaled
      debug:
-       msg: PHP support instaled!!!
+       msg: PHP support instaled on RedHat!!!
+
+- name: Target UBUNTU
+ 
+  hosts:  ubuntu
+  become: true
+
+  tasks:
+  
+  - name: Update repo index
+    apt:
+      update_cache: yes
+    when: ansible_os_family =="Debian"
+
+  - name: Update all packages
+    apt:
+      name: '*'
+      state: latest
+    when: ansible_os_family == "Debian"
+
+  - name: Install Apache 
+    apt:
+      name: apache2
+      state: latest
+    notify: Apache instaled ubuntu
+    when: ansible_os_family == "Debian"
+
+  - name: add php support for apache
+    apt:
+      name: php
+      state: latest
+    notify: PHP support for apache instaled
+    when: ansible_os_family == "Debian"
+
+  handlers:
+   - name: Apache instaled ubuntu
+     debug:
+       msg: Apache instaled on Ubuntu!!!
+   - name: PHP support for apache instaled
+     debug:
+       msg: PHP support instaled on Ubuntu!!!
+
+
+
+
+
 ...

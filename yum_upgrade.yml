@@ -1,0 +1,21 @@
+---
+-
+  hosts: multi
+  become: true
+
+  tasks:
+  
+  - name: Update repo index
+    yum:
+      update_cache: yes
+
+  - name: Update all packages
+    yum:
+     name: '*'
+     state: latest
+    notify: Package update
+  handlers:
+   - name: Package update 
+     debug:
+       msg: Packeges updated!!!
+...
