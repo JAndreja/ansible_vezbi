@@ -44,6 +44,13 @@
     notify: Apache and PHP instaled
     when: ansible_os_family == "RedHat"
 
+  - name: Start httpd server
+    service:
+      name: httpd
+      state: started
+    notify: httpd started
+    when: ansible_os_family == "RedHat"
+
   - name: Install Apache and PHP packages Ubuntu
     tags: apache,apache2,ubuntu
     apt:
@@ -67,6 +74,9 @@
    - name: Apache and PHP instaled
      debug:
        msg: Apache and PHP instaled on RedHat!!!
+   - name: httpd started
+     debug:
+       msg: httpd server started!!!
    - name: Apache and PHP instaled ubuntu
      debug:
        msg: Apache and PHP instaled on Ubuntu!!!
