@@ -1,0 +1,102 @@
+---
+- name: Update packages on all servers
+ 
+  hosts:  multi
+  become: true
+
+  tasks:
+  - name: Update all packages (RedHat)
+    tags: always
+    yum:
+      update_only: yes
+      state: latest
+      update_cache: yes
+    notify: Update installed
+    when: ansible_os_family == "RedHat"
+
+  - name: Update all packages (Ubuntu)
+    tags: always
+    apt:
+      state: latest
+      update_cache: yes
+    notify: Update installed
+    when: ansible_os_family == "Debian"
+
+  handlers:
+   - name: Update installed
+     debug:
+       msg: Update FINSHED!!!
+
+
+- name: Install Apache and PHO only on web_servers
+
+  hosts: web_servers
+  become: true
+ 
+  tasks:
+  - name: Install Apache and PHP packages RedHat
+    tags: apache,redhat,httpd
+    yum:
+      name: 
+        - httpd
+        - php
+      state: latest
+    notify: Apache and PHP instaled
+    when: ansible_os_family == "RedHat"
+
+  - name: Install Apache and PHP packages Ubuntu
+    tags: apache,apache2,ubuntu
+    apt:
+      name:
+        -  apache2
+        -  php
+      state: latest
+    notify: Apache and PHP instaled ubuntu
+    when: ansible_os_family == "Debian"
+
+  handlers:
+   - name: Apache and PHP instaled
+     debug:
+       msg: Apache and PHP instaled on RedHat!!!
+   - name: Apache and PHP instaled ubuntu
+     debug:
+       msg: Apache and PHP instaled on Ubuntu!!!
+
+- name: install mariadb package
+
+  hosts: db_servers
+  become: true
+
+  tasks:
+  - name: install mariadb
+    tags: redhat,db,mariadb
+    yum:
+      name: mariadb-server
+      state: latest
+    notify: mariaDB install
+    when: ansible_os_family == "RedHat" 
+
+  handlers:
+   - name: mariaDB install
+     debug:
+       msg: MariaDB installed!!!
+
+- name: file-servers
+
+  hosts: file_servers
+  become: true
+
+  tasks:
+  - name: install samba package
+    tags: samba
+    package:
+      name: samba
+      state: latest
+    notify: samba instalation
+
+  handlers:
+   - name: samba instalation
+     debug:
+       msg: Samba instaled!!! 
+
+...

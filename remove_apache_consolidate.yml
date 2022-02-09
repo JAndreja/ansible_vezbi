@@ -1,20 +1,45 @@
 ---
 -
-  hosts: multi
+  hosts:
+    - web_servers
+    - db_servers 
   become: true
 
   tasks:
  
-  - name: Remove Apache and PHP
+  - name: Remove package Apache ,PHP , MariaDB
     package:
       name: 
        - "{{ apache_package }}"
+       - "{{ mariadb_package }}"
        - "{{ php_package }}"
       state: absent
-    notify: Apache and php removed
+    notify: All package
 
   handlers:
-   - name: Apache and php removed 
+   - name: All package 
      debug:
-       msg: "!!! Apache and PHP  REMOVED !!!"
+       msg: "ALL PACKAGE REMOVED !!!"
+
+- 
+  hosts:
+    - file_servers
+  become: true
+  
+
+  tasks:
+
+  - name: Remove Samba
+    package:
+      name: samba
+      state: absent
+    notify: packed remove
+
+  handlers:
+   - name: packed remove
+     debug:
+       msg: Samba packed removed
+
+
+
 ...
