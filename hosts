@@ -1,5 +1,5 @@
 [local]
-ansible-engine ansible_connection=local
+ansible-engine ansible_host=172.31.18.56 ansible_connection=local
 
 [web_servers]
 node1  ansible_host=172.31.24.191 apache_package=httpd php_package=php mariadb_package=mariadb-server
@@ -11,7 +11,11 @@ node3  ansible_host=172.31.25.42  apache_package=httpd php_package=ph mariadb_pa
 [file_servers]
 node2  ansible_host=172.31.25.60  apache_package=httpd php_package=php samba_package=samba mariadb_package=mariadb-server
 
+[terraform]
+node1  ansible_host=172.31.24.191
+
 [multi:children]
 web_servers
 db_servers
 file_servers
+terraform

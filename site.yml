@@ -27,6 +27,23 @@
      debug:
        msg: Update FINSHED!!!
 
+- name: Install zip and terraform on remote destination
+  hosts: local
+  become: true
+
+  tasks:
+   - name: install zip
+     package:
+       name: unzip
+
+   - name: install terraform
+     unarchive:
+       src: https://releases.hashicorp.com/terraform/1.1.5/terraform_1.1.5_linux_amd64.zip
+       dest: /usr/local/bin
+       remote_src: yes
+       mode: 0755
+       owner: root
+       group: root
 
 - name: Install Apache and PHO only on web_servers
 
