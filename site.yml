@@ -5,21 +5,21 @@
   become: true
 
   tasks:
-  - name: Update all packages (RedHat)
+  - name: Update repo cache (RedHat)
     tags: always
     yum:
-      update_only: yes
       state: latest
       update_cache: yes
     notify: Update installed
+    changed_when: false
     when: ansible_os_family == "RedHat"
 
-  - name: Update all packages (Ubuntu)
+  - name: Update repo cache (Ubuntu)
     tags: always
     apt:
-      state: latest
       update_cache: yes
     notify: Update installed
+    changed_when: false
     when: ansible_os_family == "Debian"
 
   handlers:
@@ -27,7 +27,19 @@
      debug:
        msg: Update FINSHED!!!
 
-- name: Install zip and terraform on remote destination
+- name: create users
+  hosts: multi
+  become: true
+
+  tasks:
+
+    - name: add ssh key to user
+      tags: always
+      authorized_key:
+        user: andreja
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVTSsyHb7bDUWQLupquecXnAiR/TLfQVr2mWtfVZXPRWmqG/sdGj2u2rvQOR1ox9rm9Dp2/jniuOtQR5Di3by7ISDNV2psW/dDCBS+NYfu1aFP9B+2jejIaWOO9aKS4VeZEVsMuYVOSsnzfH0bk1Lwpx9KRznXAljW6+fzVNLcgsAvNNdn21j7octv6I289Q5Q04fxmRsOCs5s2i7NWvgbr1DCN6/xURO6XNL93DbrggFXj/5mPNq1izRhOcrlJCur1DDTHa4VFfI+pUG3uII98UkQVo7ojdtiKo0wwfzMSKMtqysyKR2ZHX+d2DtmpCe0isAmalQwxtsdEniU5dvx ec2-user@ansible-engine"
+
+- name: Install zip and terraform on local
   hosts: local
   become: true
 
