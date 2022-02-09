@@ -1,0 +1,3 @@
+- name: mariaDB install
+  debug:
+    msg: MARIADB INSTALLED!!!

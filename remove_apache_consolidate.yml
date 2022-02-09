@@ -1,17 +1,14 @@
 ---
--
+- name: Remove Web_servers packages 
   hosts:
     - web_servers
-    - db_servers 
   become: true
-
   tasks:
  
-  - name: Remove package Apache ,PHP , MariaDB
+  - name: Remove package Apache ,PHP 
     package:
       name: 
        - "{{ apache_package }}"
-       - "{{ mariadb_package }}"
        - "{{ php_package }}"
       state: absent
     notify: All package
@@ -19,26 +16,43 @@
   handlers:
    - name: All package 
      debug:
-       msg: "ALL PACKAGE REMOVED !!!"
+       msg: Removed - {{ apache_package }} , - {{ php_package }}
 
-- 
+- name: Remove DB_servers packages 
+  hosts:
+    - db_servers
+  become: true
+  tasks:
+ 
+  - name: Remove mariadb
+    package:
+      name: 
+       - "{{ mariadb_package }}"
+      state: absent
+    notify: All package
+
+  handlers:
+   - name: All package 
+     debug:
+       msg: Removed - {{ mariadb_package }}
+
+
+- name: Remove File_servers packages 
   hosts:
     - file_servers
   become: true
-  
-
   tasks:
 
   - name: Remove Samba
     package:
-      name: samba
+      name: "{{ samba_package }}"
       state: absent
     notify: packed remove
 
   handlers:
    - name: packed remove
      debug:
-       msg: Samba packed removed
+       msg: Removed - {{ samba_package }}
 
 
 

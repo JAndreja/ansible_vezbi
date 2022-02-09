@@ -1,12 +1,12 @@
-- name: Install Apache and PHP packages RedHat
+- name: Install Apache and PHP packages
   tags: apache,redhat,httpd
-  yum:
+  package:
     name: 
-      - httpd
-      - php
+      - "{{ apache_package }}"
+      - "{{ php_package }}"
     state: latest
   notify: Apache and PHP instaled
-  when: ansible_os_family == "RedHat"
+
 
 - name: Start httpd server (RedHat)
   tags: apache,redhat,httpd
@@ -16,16 +16,6 @@
     enabled: yes
   notify: httpd started
   when: ansible_os_family == "RedHat"
-
-- name: Install Apache and PHP packages Ubuntu
-  tags: apache,apache2,ubuntu
-  apt:
-    name:
-       -  apache2
-       -  php
-    state: latest
-  notify: Apache and PHP instaled ubuntu
-  when: ansible_os_family == "Debian"
 
 - name: copy default html files
   tags: apache,redhat,httpd

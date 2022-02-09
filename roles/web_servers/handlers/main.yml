@@ -1,0 +1,6 @@
+- name: Apache and PHP instaled
+  debug:
+    msg: APACHE AND PHP INSTALLED!!!
+- name: httpd started
+  debug:
+    msg: HTTPD SERVER STARTED!!!
