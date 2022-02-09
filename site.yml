@@ -54,6 +54,15 @@
     notify: Apache and PHP instaled ubuntu
     when: ansible_os_family == "Debian"
 
+  - name: copy default html files
+    tags: apache,redhat,httpd
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
   handlers:
    - name: Apache and PHP instaled
      debug:
@@ -61,6 +70,7 @@
    - name: Apache and PHP instaled ubuntu
      debug:
        msg: Apache and PHP instaled on Ubuntu!!!
+
 
 - name: install mariadb package
 
