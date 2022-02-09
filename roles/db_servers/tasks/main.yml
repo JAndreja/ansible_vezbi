@@ -1,0 +1,7 @@
+- name: install mariadb
+  tags: redhat,db,mariadb
+  yum:
+    name: mariadb-server
+    state: latest
+  notify: mariaDB install
+  when: ansible_os_family == "RedHat" 

@@ -1,0 +1,82 @@
+---
+- name: Update packages on all servers
+ 
+  hosts:  multi
+  become: true
+
+  tasks:
+  - name: Update repo cache (RedHat)
+    tags: always
+    yum:
+      state: latest
+      update_cache: yes
+    notify: Update installed
+    changed_when: false
+    when: ansible_os_family == "RedHat"
+
+  - name: Update repo cache (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    notify: Update installed
+    changed_when: false
+    when: ansible_os_family == "Debian"
+
+  handlers:
+   - name: Update installed
+     debug:
+       msg: Update FINSHED!!!
+
+- name: create users
+  hosts: multi
+  become: true
+  roles:
+    - base
+
+- name: Install zip and terraform on local
+  hosts: local
+  become: true
+  roles:
+    - local
+   
+
+- name: Install Apache and PHP only on web_servers
+  hosts: web_servers
+  become: true
+  roles:
+    - web_servers
+
+  handlers:
+   - name: Apache and PHP instaled
+     debug:
+       msg: Apache and PHP instaled on RedHat!!!
+   - name: httpd started
+     debug:
+       msg: httpd server started!!!
+   - name: Apache and PHP instaled ubuntu
+     debug:
+       msg: Apache and PHP instaled on Ubuntu!!!
+
+- name: install mariadb package
+  hosts: db_servers
+  become: true
+  roles:
+    - db_servers
+
+  handlers:
+   - name: mariaDB install
+     debug:
+       msg: MariaDB installed!!!
+
+- name: file-servers
+  hosts: file_servers
+  become: true
+  roles:
+    - file_servers
+    
+  handlers:
+   - name: samba instalation
+     debug:
+       msg: Samba instaled!!! 
+
+...
