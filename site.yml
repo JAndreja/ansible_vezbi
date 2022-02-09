@@ -45,7 +45,7 @@
        owner: root
        group: root
 
-- name: Install Apache and PHO only on web_servers
+- name: Install Apache and PHP only on web_servers
 
   hosts: web_servers
   become: true
@@ -61,10 +61,12 @@
     notify: Apache and PHP instaled
     when: ansible_os_family == "RedHat"
 
-  - name: Start httpd server
+  - name: Start httpd server (RedHat)
+    tags: apache,redhat,httpd
     service:
       name: httpd
       state: started
+      enabled: yes
     notify: httpd started
     when: ansible_os_family == "RedHat"
 
